@@ -22,7 +22,7 @@ def read_root() -> dict[str,str]:
 def get_all_notes() -> list[Note]:
         return list(notes.values())
 
-@app.get("/notes/{notes_id}", tags=["Notes"], response_model=Note)
+@app.get("/notes/{note_id}", tags=["Notes"], response_model=Note)
 def get_note(note_id: str) -> Note:
     note = notes.get(note_id)
     if note is None:
@@ -36,7 +36,7 @@ def create_note(note: NoteCreate) -> Note:
     notes[note_id] = new_note
     return new_note
 
-@app.put("/notes/{notes_id}", tags=["Notes"], response_model=Note)
+@app.put("/notes/{note_id}", tags=["Notes"], response_model=Note)
 def update_note(note_id: str, note_update:NoteCreate) -> Note:
     if note_id not in notes:
          raise HTTPException(status_code=404, detail="Note not found")
@@ -44,7 +44,7 @@ def update_note(note_id: str, note_update:NoteCreate) -> Note:
     notes[note_id] = updated
     return updated 
 
-@app.delete("/notes/{notes_id}", tags=["Notes"], status_code=status.HTTP_204_NO_CONTENT)
+@app.delete("/notes/{note_id}", tags=["Notes"], status_code=status.HTTP_204_NO_CONTENT)
 def delete_note(note_id: str) -> None:
     if note_id not in notes:
         raise HTTPException(status_code=404, detail="Note not found")
