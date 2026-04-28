@@ -18,6 +18,6 @@ async def get_note(note_id: str, db: AsyncSession = Depends(get_db)):
 async def create_note(note: NoteCreate, db: AsyncSession = Depends(get_db)):
     return await note_service.create_note(db, note)
 
-@router.delete("{note_id}")
+@router.delete("/{note_id}")
 async def delete_note(note_id: str, db: AsyncSession = Depends(get_db)):
     await note_service.delete(db, note_id)

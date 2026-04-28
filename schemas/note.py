@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Self
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator, ConfigDict
 
 class NoteCreate(BaseModel):
     title: str = Field(..., min_length=1, max_length=100, description="Заголовок заметки")
@@ -24,6 +24,5 @@ class NoteCreate(BaseModel):
 class NoteInDB(NoteCreate):
     id: str
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-    class Config:
-        from_attributes = True
+    
+    model_config = ConfigDict(from_attributes=True)

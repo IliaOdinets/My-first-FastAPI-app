@@ -1,10 +1,16 @@
+import uuid
+
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.note import Note
 from schemas.note import NoteCreate
 
 async def create_note(db: AsyncSession, note_data: NoteCreate) -> Note:
-    db_note = Note(**note_data.model_dump())
+    db_note = Note(
+        id=str(uuid.uuid4()),
+        title=note_data.title,
+        content=note_data.content
+    )
     db.add(db_note)
     await db.commit()
     await db.refresh(db_note)
@@ -20,3 +26,4 @@ async def get_note_by_id(db: AsyncSession, note_id: str) -> Note | None:
 
 async def delete_note_by_id(db: AsyncSession, note_id: str) ->  None:
     await db.execute(delete(Note).where(Note.id == note_id))
+    await db.commit()
